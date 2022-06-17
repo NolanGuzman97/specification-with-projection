@@ -22,6 +22,8 @@ public interface JpaSpecificationExecutorWithProjection<T, ID> {
 
     <R> Page<R> findAll(Specification<T> spec, Class<R> projectionClass, Pageable pageable);
 
+    <R> Long countAll(Specification<T> spec, Class<R> projectionClass);
+
     /**
      * Use Spring Data Annotation instead of manually provide EntityGraph.
      * @param spec

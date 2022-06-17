@@ -35,6 +35,13 @@ public class SpecificationExecutorProjectionTest {
     }
 
     @Test
+    public void countAll() {
+        Specification<Document> where = Specification.where(DocumentSpecs.idEq(1L));
+        Long all = documentRepository.countAll(where, DocumentRepository.DocumentWithoutParent.class);
+        Assertions.assertThat(all ).isEqualTo(1);
+    }
+
+    @Test
     public void findAll2() {
         Specification<Document> where = Specification.where(DocumentSpecs.idEq(1L));
         Page<DocumentRepository.DocumentWithoutParent> all = documentRepository.findAll(where, DocumentRepository.DocumentWithoutParent.class, PageRequest.of(0,10));
@@ -81,6 +88,12 @@ public class SpecificationExecutorProjectionTest {
         Assertions.assertThat(all).isNotEmpty();
         Assertions.assertThat(all.getTotalElements()).isEqualTo(24);
         Assertions.assertThat(all.getTotalPages()).isEqualTo(3);
+    }
+
+    @Test void countAll2() {
+        Specification<Document> where = Specification.where(null);
+        Long all = documentRepository.countAll(where, DocumentRepository.OnlyParent.class);
+        Assertions.assertThat(all).isEqualTo(24);
     }
 
     @Test

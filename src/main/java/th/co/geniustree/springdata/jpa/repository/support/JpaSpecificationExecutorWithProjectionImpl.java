@@ -20,7 +20,7 @@ import org.springframework.data.repository.query.MyResultProcessor;
 import org.springframework.data.repository.query.ReturnTypeWarpper;
 import org.springframework.data.repository.query.ReturnedType;
 import org.springframework.data.repository.query.TupleConverter;
-import org.springframework.data.repository.support.PageableExecutionUtils;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import th.co.geniustree.springdata.jpa.repository.JpaSpecificationExecutorWithProjection;
@@ -128,6 +128,11 @@ public class JpaSpecificationExecutorWithProjectionImpl<T, ID extends Serializab
         final List<R> resultList = resultProcessor.processResult(query.getResultList(), new TupleConverter(returnedType));
         final Page<R> page = PageableExecutionUtils.getPage(resultList, pageable, () -> executeCountQuery(this.getCountQuery(spec, getDomainClass())));
         return pageable.isUnpaged() ? new PageImpl(resultList) : page;
+    }
+
+    @Override
+    public <R> Long countAll(Specification<T> spec, Class<R> projectionType) {
+        return executeCountQuery(this.getCountQuery(spec, getDomainClass()));
     }
 
     static Long executeCountQuery(TypedQuery<Long> query) {
