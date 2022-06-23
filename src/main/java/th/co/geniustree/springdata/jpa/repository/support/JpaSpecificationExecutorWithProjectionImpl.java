@@ -131,6 +131,15 @@ public class JpaSpecificationExecutorWithProjectionImpl<T, ID extends Serializab
     }
 
     @Override
+    public <R> List<R> findAllWithoutPagination(Specification<T> spec, Class<R> projectionType) {
+        final ReturnedType returnedType = ReturnTypeWarpper.of(projectionType, getDomainClass(), projectionFactory);
+        final TypedQuery<Tuple> query = getTupleQuery(spec, Sort.unsorted(), returnedType);
+        final MyResultProcessor resultProcessor = new MyResultProcessor(projectionFactory,returnedType);
+        final List<R> resultList = resultProcessor.processResult(query.getResultList(), new TupleConverter(returnedType));
+        return resultList;
+    }
+
+    @Override
     public <R> Long countAll(Specification<T> spec, Class<R> projectionType) {
         return executeCountQuery(this.getCountQuery(spec, getDomainClass()));
     }

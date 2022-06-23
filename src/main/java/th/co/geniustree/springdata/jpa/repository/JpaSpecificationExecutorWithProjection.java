@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.query.JpaEntityGraph;
 import org.springframework.data.repository.NoRepositoryBean;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -21,6 +22,8 @@ public interface JpaSpecificationExecutorWithProjection<T, ID> {
     <R> Optional<R> findOne(Specification<T> spec, Class<R> projectionClass);
 
     <R> Page<R> findAll(Specification<T> spec, Class<R> projectionClass, Pageable pageable);
+
+    <R> List<R> findAllWithoutPagination(Specification<T> spec, Class<R> projectionClass);
 
     <R> Long countAll(Specification<T> spec, Class<R> projectionClass);
 

@@ -16,6 +16,7 @@ import th.co.geniustree.springdata.jpa.domain.Document;
 import th.co.geniustree.springdata.jpa.repository.DocumentRepository;
 import th.co.geniustree.springdata.jpa.specification.DocumentSpecs;
 
+import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
@@ -88,6 +89,14 @@ public class SpecificationExecutorProjectionTest {
         Assertions.assertThat(all).isNotEmpty();
         Assertions.assertThat(all.getTotalElements()).isEqualTo(24);
         Assertions.assertThat(all.getTotalPages()).isEqualTo(3);
+    }
+
+    @Test
+    public void find_all_unpaged() {
+        Specification<Document> where = Specification.where(null);
+        List<DocumentRepository.OnlyParent> all = documentRepository.findAllWithoutPagination(where, DocumentRepository.OnlyParent.class);
+        Assertions.assertThat(all).isNotEmpty();
+        Assertions.assertThat(all.size()).isEqualTo(24);
     }
 
     @Test void countAll2() {
